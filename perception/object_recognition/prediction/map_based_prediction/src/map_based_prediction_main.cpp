@@ -25,6 +25,7 @@ int main(int argc, char ** argv)
   auto node = std::make_shared<MapBasedPredictionROS>();
   executor->add_node(node);
   executor->spin();
-  executor->remove_node(node); rclcpp::shutdown();
+  executor->remove_node(node);
+  rclcpp::shutdown();
   return 0;
 }
