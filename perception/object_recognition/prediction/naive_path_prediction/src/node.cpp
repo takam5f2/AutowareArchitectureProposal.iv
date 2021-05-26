@@ -75,8 +75,11 @@ void NaivePathPredictionNode::callback(
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<NaivePathPredictionNode>());
-
+  auto executor = std::make_shared<rclcpp::executors::StaticSingleThreadedExecutor>();
+  auto node = std::make_shared<NaivePathPredictionNode>();
+  executor->add_node(node);
+  executor->spin();
+  executor->remove_node(node);
   rclcpp::shutdown();
 
   return 0;
