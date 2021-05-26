@@ -87,8 +87,11 @@ private:
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
+  auto executor = std::make_shared<rclcpp::executors::StaticSingleThreadedExecutor>();
   auto node = std::make_shared<MapTFGenerator>();
-  rclcpp::spin(node);
-  rclcpp::shutdown();
+  executor->add_node(node);
+  executor->spin();
+  executor->remove_node(node); rclcpp::shutdown();
+
   return 0;
 }
