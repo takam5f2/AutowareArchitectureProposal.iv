@@ -85,8 +85,11 @@ int main(int argc, char * argv[])
     throw std::runtime_error(msg);
   }
 
+  auto executor = std::make_shared<rclcpp::executors::StaticSingleThreadedExecutor>();
   const auto pointcloud_map_loader_node = std::make_shared<PointCloudMapLoaderNode>(pcd_paths);
-  rclcpp::spin(pointcloud_map_loader_node);
+  executor->add_node(pointcloud_map_loader_node);
+  executor->spin();
+  executor->remove_node(pointcloud_map_loader_node);
   rclcpp::shutdown();
 
   return 0;

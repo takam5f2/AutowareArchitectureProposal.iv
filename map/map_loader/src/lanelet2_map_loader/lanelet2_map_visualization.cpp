@@ -154,7 +154,12 @@ int main(int argc, char ** argv)
     "output/lanelet2_map_marker", durable_qos);
 
   g_logger = std::make_shared<rclcpp::Logger>(node->get_logger());
-  rclcpp::spin(node);
+
+  auto executor = std::make_shared<rclcpp::executors::StaticSingleThreadedExecutor>();
+  executor->add_node(node);
+  executor->spin();
+  executor->remove_node(node);
+
   rclcpp::shutdown();
 
   return 0;

@@ -93,8 +93,10 @@ int main(int argc, char ** argv)
 
   map_bin_pub->publish(map_bin_msg);
 
-  rclcpp::spin(node);
-
+  auto executor = std::make_shared<rclcpp::executors::StaticSingleThreadedExecutor>();
+  executor->add_node(node);
+  executor->spin();
+  executor->remove_node(node);
   rclcpp::shutdown();
   return 0;
 }
