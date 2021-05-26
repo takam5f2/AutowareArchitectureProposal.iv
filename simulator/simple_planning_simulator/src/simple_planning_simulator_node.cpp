@@ -18,9 +18,12 @@
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
+  auto executor = std::make_shared<rclcpp::executors::StaticSingleThreadedExecutor>();
   rclcpp::NodeOptions options;
   const auto node = std::make_shared<Simulator>("simple_planning_simulator", options);
-  rclcpp::spin(node);
+  executor->add_node(node);
+  executor->spin();
+  executor->remove_node(node);
   rclcpp::shutdown();
 
   return 0;
