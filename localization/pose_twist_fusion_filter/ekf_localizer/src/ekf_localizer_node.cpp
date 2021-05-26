@@ -18,10 +18,13 @@
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
+  auto executor = std::make_shared<rclcpp::executors::StaticSingleThreadedExecutor>();
   rclcpp::NodeOptions node_options;
   auto node = std::make_shared<EKFLocalizer>("ekf_localizer", node_options);
-
-  rclcpp::spin(node);
+  executor->add_node(node);
+  executor->spin();
+  executor->remove_node(node);  
+  rclcpp::shutdown();
 
   return 0;
 }
